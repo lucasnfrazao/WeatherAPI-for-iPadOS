@@ -16,6 +16,9 @@ struct WeatherModel {
     let minTemperature: Double
     let maxTemperature: Double
     
+    let lat: Double?
+    let lon: Double?
+    
     var temperatureString: String {
         return String(format: "%0.0f", temperature)
     }

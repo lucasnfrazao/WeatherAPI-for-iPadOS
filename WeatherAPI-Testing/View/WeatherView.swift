@@ -33,6 +33,7 @@ class WeatherView: UIView {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "sun.max")
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
         
         return imageView
     }()
@@ -43,6 +44,10 @@ class WeatherView: UIView {
         stackView.alignment = .center
         stackView.distribution = .fill
         stackView.axis = .vertical
+        stackView.backgroundColor = .secondarySystemBackground
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        stackView.layer.cornerRadius = 10
         
         return stackView
     }()
@@ -61,7 +66,7 @@ class WeatherView: UIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.textColor = .label
-        label.text = "Max Temp."
+        label.text = "Max. Temp."
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -73,6 +78,10 @@ class WeatherView: UIView {
         stackView.alignment = .center
         stackView.distribution = .fill
         stackView.axis = .vertical
+        stackView.backgroundColor = .secondarySystemBackground
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        stackView.layer.cornerRadius = 10
         
         return stackView
     }()
@@ -91,11 +100,25 @@ class WeatherView: UIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
         label.textColor = .label
-        label.text = "Min Temp."
+        label.text = "Min. Temp."
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
+    
+    var locationButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 40, weight: .regular, scale: .default)
+        let image = UIImage(systemName: "location", withConfiguration: largeConfig)
+        button.setImage(image, for: .normal)
+        button.backgroundColor = .tertiarySystemBackground
+        button.tintColor = .systemBlue
+        button.layer.cornerRadius = 15
+        
+        return button
+    }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -116,6 +139,7 @@ class WeatherView: UIView {
     func setupHierarchy() {
         self.addSubview(temperatureDisplay)
         self.addSubview(cityName)
+        self.addSubview(locationButton)
         self.addSubview(temperatureStatus)
         self.addSubview(stackViewMaxTemperature)
         self.addSubview(stackViewMinTemperature)
@@ -140,10 +164,14 @@ class WeatherView: UIView {
             temperatureDisplay.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             cityName.topAnchor.constraint(equalTo: temperatureDisplay.bottomAnchor),
             cityName.centerXAnchor.constraint(equalTo: temperatureDisplay.centerXAnchor),
+            locationButton.centerYAnchor.constraint(equalTo: cityName.centerYAnchor),
+            locationButton.heightAnchor.constraint(equalTo: cityName.heightAnchor),
+            locationButton.widthAnchor.constraint(equalTo: locationButton.heightAnchor),
+            locationButton.leadingAnchor.constraint(equalTo: cityName.layoutMarginsGuide.trailingAnchor, constant: 30),
             stackViewMaxTemperature.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
             stackViewMaxTemperature.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor),
             stackViewMinTemperature.centerYAnchor.constraint(equalTo: stackViewMaxTemperature.centerYAnchor),
-            stackViewMinTemperature.leadingAnchor.constraint(equalTo: stackViewMaxTemperature.layoutMarginsGuide.trailingAnchor, constant: 20)
+            stackViewMinTemperature.leadingAnchor.constraint(equalTo: stackViewMaxTemperature.layoutMarginsGuide.trailingAnchor, constant: 35)
         ])
         
         

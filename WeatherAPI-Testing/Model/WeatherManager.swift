@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol WeatherManagerDelegate {
     func didUpdateWeatherData(_ weatherManager: WeatherManager, weather: WeatherModel)
@@ -20,6 +21,11 @@ class WeatherManager {
     
     func fetchWeather(with cityName: String) {
         let urlString = "\(weatherURL)&q=\(cityName)"
+        performRequest(with: urlString)
+    }
+    
+    func fetchWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        let urlString = "\(weatherURL)&lat=\(lat)&lon=\(lon)"
         performRequest(with: urlString)
     }
     
@@ -64,8 +70,10 @@ class WeatherManager {
             let temperature = decoderData.main.temp
             let minTemparature = decoderData.main.temp_min
             let maxTemparature = decoderData.main.temp_max
+            let lat = decoderData.coord.lat
+            let lon = decoderData.coord.lon
             
-            let weather = WeatherModel(conditionID: id, cityName: name, temperature: temperature, minTemperature: minTemparature, maxTemperature: maxTemparature)
+            let weather = WeatherModel(conditionID: id, cityName: name, temperature: temperature, minTemperature: minTemparature, maxTemperature: maxTemparature, lat: lat, lon: lon)
             
             return weather
             
