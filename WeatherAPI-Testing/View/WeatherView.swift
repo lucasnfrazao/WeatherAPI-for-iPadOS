@@ -123,7 +123,7 @@ class WeatherView: UIView {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 40, weight: .regular, scale: .default)
         let image = UIImage(systemName: "location", withConfiguration: largeConfig)
         button.setImage(image, for: .normal)
-        button.backgroundColor = .tertiarySystemBackground
+        button.backgroundColor = .secondarySystemBackground
         button.tintColor = .systemBlue
         button.layer.cornerRadius = 15
         
