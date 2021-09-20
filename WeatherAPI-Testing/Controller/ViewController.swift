@@ -11,10 +11,17 @@ import CoreLocation
 class ViewController: UIViewController {
 
     var weatherView = WeatherView()
+    
+    var cityManager = CityManager()
     var weatherManager = WeatherManager()
     let locationManager = CLLocationManager()
+    let searchController = UISearchController()
     
     var currentLocation = CLLocation()
+    
+    var isSearchBarEmpty: Bool {
+      return searchController.searchBar.text?.isEmpty ?? true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +29,18 @@ class ViewController: UIViewController {
         
         locationManager.delegate = self
         weatherManager.delegate = self
-        weatherManager.fetchWeather(with: "London")
+        cityManager.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for a City"
+        navigationItem.searchController = searchController
+        navigationItem.title = "WeatherAPI"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        definesPresentationContext = true
+        
+        weatherManager.fetchWeather(with: "Paris")
+        //cityManager.performRequest(with: "Rio de Janeiro")
         
         weatherView.locationButton.addTarget(self, action: #selector(fetchUserLocation), for: .touchUpInside)
     }
@@ -46,6 +64,8 @@ class ViewController: UIViewController {
 extension ViewController: WeatherManagerDelegate {
     
     func didUpdateWeatherData(_ weatherManager: WeatherManager, weather: WeatherModel) {
+        
+        cityManager.performRequest(with: "Paris")
         
         DispatchQueue.main.async {
             self.weatherView.temperatureDisplay.text = "\(weather.temperatureString)ºC"
@@ -95,5 +115,31 @@ extension ViewController: CLLocationManagerDelegate {
         
         print(error)
     }
+    
+}
+
+//MARK: - CityManagerDelegate
+
+extension ViewController: CityManagerDelegate {
+    
+    func didUpdateCityManager(city: CityModel) {
+        
+        DispatchQueue.main.async {
+            self.weatherView.countryName.text = city.country
+        }
+        
+    }
+    
+}
+
+
+//MARK: - UISearchControllerDelegate
+
+extension ViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+    
     
 }

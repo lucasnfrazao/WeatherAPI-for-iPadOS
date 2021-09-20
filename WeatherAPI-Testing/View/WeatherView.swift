@@ -14,6 +14,7 @@ class WeatherView: UIView {
         label.font = UIFont.systemFont(ofSize: 80, weight: .bold)
         label.textColor = .label
         label.text = "32ºC"
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -24,6 +25,16 @@ class WeatherView: UIView {
         label.font = UIFont.systemFont(ofSize: 60, weight: .medium)
         label.textColor = .label
         label.text = "Searching..."
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    var countryName: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 35, weight: .regular)
+        label.textColor = .label
+        label.text = "Where's it?"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -139,6 +150,7 @@ class WeatherView: UIView {
     func setupHierarchy() {
         self.addSubview(temperatureDisplay)
         self.addSubview(cityName)
+        self.addSubview(countryName)
         self.addSubview(locationButton)
         self.addSubview(temperatureStatus)
         self.addSubview(stackViewMaxTemperature)
@@ -159,23 +171,23 @@ class WeatherView: UIView {
             temperatureStatus.widthAnchor.constraint(equalTo: temperatureDisplay.widthAnchor),
             temperatureStatus.heightAnchor.constraint(equalTo: temperatureStatus.widthAnchor),
             temperatureStatus.centerXAnchor.constraint(equalTo: temperatureDisplay.centerXAnchor),
+            temperatureStatus.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             temperatureStatus.bottomAnchor.constraint(equalTo: temperatureDisplay.topAnchor),
             temperatureDisplay.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            temperatureDisplay.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             cityName.topAnchor.constraint(equalTo: temperatureDisplay.bottomAnchor),
             cityName.centerXAnchor.constraint(equalTo: temperatureDisplay.centerXAnchor),
-            locationButton.centerYAnchor.constraint(equalTo: cityName.centerYAnchor),
+            countryName.topAnchor.constraint(equalTo: cityName.bottomAnchor),
+            countryName.centerXAnchor.constraint(equalTo: cityName.centerXAnchor),
+            locationButton.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor, constant: 20),
             locationButton.heightAnchor.constraint(equalTo: cityName.heightAnchor),
             locationButton.widthAnchor.constraint(equalTo: locationButton.heightAnchor),
-            locationButton.leadingAnchor.constraint(equalTo: cityName.layoutMarginsGuide.trailingAnchor, constant: 30),
+            locationButton.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor, constant: -20),
             stackViewMaxTemperature.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
-            stackViewMaxTemperature.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor),
-            stackViewMinTemperature.centerYAnchor.constraint(equalTo: stackViewMaxTemperature.centerYAnchor),
-            stackViewMinTemperature.leadingAnchor.constraint(equalTo: stackViewMaxTemperature.layoutMarginsGuide.trailingAnchor, constant: 35)
+            stackViewMaxTemperature.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor, constant: 20),
+            stackViewMinTemperature.centerXAnchor.constraint(equalTo: stackViewMaxTemperature.centerXAnchor),
+            stackViewMinTemperature.topAnchor.constraint(equalTo: stackViewMaxTemperature.layoutMarginsGuide.bottomAnchor, constant: 35)
         ])
-        
-        
-        
+     
     }
     
 
